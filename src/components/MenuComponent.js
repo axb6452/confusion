@@ -1,6 +1,7 @@
 import React, { Component } from 'react'
 import { Media } from 'reactstrap'
 import { Card, CardImg, CardImgOverlay, CardText, CardBody, CardTitle } from 'reactstrap'
+import DishDetail from './DishdetailComponent'
 
 
 class Menu extends Component {
@@ -11,20 +12,18 @@ class Menu extends Component {
         };
     }
 
+    componentDidMount() {
+    }
+
     onDishSelect(dish) {
         this.setState({ selectedDish: dish })
     }
 
+    // Task 1
     renderDish(dish) {
-        if (dish) {
+        if (dish && dish != null) {
             return (
-                <Card>
-                    <CardImg width="100%" src={dish.image} alt={dish.name}></CardImg>
-                    <CardBody>
-                        <CardTitle>{dish.name}</CardTitle>
-                        <CardText>{dish.description}</CardText>
-                    </CardBody>
-                </Card>
+                <DishDetail selectedDish = {dish} /> 
             )
         } else {
             return (
@@ -50,13 +49,12 @@ class Menu extends Component {
             )
         });
 
-
         return (
             <div className="container" >
                 <div className="row">
                     {menu}
                 </div>
-                <div className="row">
+                <div>
                     {this.renderDish(this.state.selectedDish)}
                 </div>
             </div>
