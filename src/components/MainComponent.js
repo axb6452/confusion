@@ -1,11 +1,15 @@
 import React, { Component } from 'react';
 import Menu from './MenuComponent';
 import Header from './HeaderComponent';
-import DishDetail from './DishdetailComponent'
-import Footer from './FooterComponent'
-import Home from './HomeComponent'
+import DishDetail from './DishdetailComponent';
+import Footer from './FooterComponent';
+import Home from './HomeComponent';
+import Contact from './ContactComponent';
 import { DISHES } from '../shared/dishes';
-import { Switch, Route, Redirect } from 'react-router-dom'
+import { COMMENTS } from '../shared/comments';
+import { LEADERS } from '../shared/leaders';
+import { PROMOTIONS } from '../shared/promotions';
+import { Switch, Route, Redirect } from 'react-router-dom';
 
 
 
@@ -14,7 +18,9 @@ class Main extends Component {
         super(props);
         this.state = {
             dishes: DISHES,
-            selectedDish: null
+            promotions: PROMOTIONS,
+            comments: COMMENTS,
+            leaders: LEADERS
         };
     }
 
@@ -26,7 +32,9 @@ class Main extends Component {
         const HomePage = () => {
             {/* A second way to define function components - explicit declaration of function component*/ }
             return (
-                <Home />
+                <Home dish={this.state.dishes.filter((dish) => dish.featured)[0]}  
+                promotion={this.state.promotions.filter((promotion) => promotion.featured)[0]}
+                leader={this.state.leaders.filter((leader) => leader.featured)[0]}></Home>
             )
         }
         return (
@@ -35,7 +43,8 @@ class Main extends Component {
                 <Switch>
                     <Route path="/home" component={HomePage} />
                     <Route exact path="/menu" component={() => <Menu dishes={this.state.dishes} />} /> {/* Inline function component declaration in order to pass props to menu component.*/}
-                    <Redirect to="/home"></Redirect>    
+                    <Route exact path="/contactus" component={Contact}></Route> {/* when not passng any props to component, can just reference component as such using {}*/}
+                    <Redirect to="/home"></Redirect>
                 </Switch>
 
                 <Footer />
