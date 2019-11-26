@@ -10,6 +10,7 @@ import { COMMENTS } from '../shared/comments';
 import { LEADERS } from '../shared/leaders';
 import { PROMOTIONS } from '../shared/promotions';
 import { Switch, Route, Redirect } from 'react-router-dom';
+import { parse } from 'path';
 
 
 
@@ -32,23 +33,31 @@ class Main extends Component {
         const HomePage = () => {
             {/* A second way to define function components - explicit declaration of function component*/ }
             return (
-                <Home dish={this.state.dishes.filter((dish) => dish.featured)[0]}  
-                promotion={this.state.promotions.filter((promotion) => promotion.featured)[0]}
-                leader={this.state.leaders.filter((leader) => leader.featured)[0]}></Home>
+                <Home dish={this.state.dishes.filter((dish) => dish.featured)[0]}
+                    promotion={this.state.promotions.filter((promotion) => promotion.featured)[0]}
+                    leader={this.state.leaders.filter((leader) => leader.featured)[0]}></Home>
             )
         }
+
+        const DishWithId = ({match}) => {
+            return(
+                <DishDetail dish={this.state.dishes.filter((dish) => dish.id === parseInt(match.params.dishId,10))[0]} comments={this.state.comments.filter((comment) => comment.dishId == parseInt(match.params.dishId,10))}></DishDetail>
+            )
+        }
+
         return (
             <div>
                 <Header />
                 <Switch>
                     <Route path="/home" component={HomePage} />
                     <Route exact path="/menu" component={() => <Menu dishes={this.state.dishes} />} /> {/* Inline function component declaration in order to pass props to menu component.*/}
+                    <Route path="/menu/:dishId" component={DishWithId}></Route>
                     <Route exact path="/contactus" component={Contact}></Route> {/* when not passng any props to component, can just reference component as such using {}*/}
-                    <Redirect to="/home"></Redirect>
+                <Redirect to="/home"></Redirect>
                 </Switch>
 
-                <Footer />
-            </div>
+            <Footer />
+            </div >
         );
     }
 }
