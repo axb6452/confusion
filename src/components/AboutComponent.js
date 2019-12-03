@@ -5,7 +5,6 @@ import { Link } from 'react-router-dom';
 
 // Assignment2: Task 2
 function RenderLeader({ leader }) {
-    console.log(leader);
     if (leader == null) {
         return (
             <div></div>
@@ -18,7 +17,7 @@ function RenderLeader({ leader }) {
                     <div className="row card-body">
                         <CardImg src={leader.image} left height={115} className="col-sm-2 m-4"></CardImg>
                         <CardBody className="col-sm-9">
-                            <CardTitle heading style={{ "margin": "0" }}><h4><b>{leader.name}</b></h4></CardTitle>
+                            <CardTitle heading style={{ "margin": "0" }}><b>{leader.name}</b></CardTitle>
                             <CardSubtitle style={{ "marginTop": "5px" }}>{leader.designation}</CardSubtitle>
                             <CardText style={{ "marginTop": "25px" }}>{leader.description}</CardText>
                         </CardBody>

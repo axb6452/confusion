@@ -31,7 +31,7 @@ class Header extends Component {
         });
     }
 
-    // Retrieve values directly from the DOM and assign.
+    // Retrieve values directly from the DOM and display.
     handleLogin(event) {
         this.toggleModal();
         alert("Username: " + this.username.value + " Password: " + this.password.value +  " Remember: " + this.remember.checked);
