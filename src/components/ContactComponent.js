@@ -1,85 +1,88 @@
 import React, { Component } from 'react';
-import { Breadcrumb, BreadcrumbItem, Button, Form, FormFeedback, FormGroup, Label, Input, Col } from 'reactstrap'
+import { Breadcrumb, BreadcrumbItem, Button, Form, FormFeedback, FormGroup, Label, Input, Row, Col } from 'reactstrap'
 import { Link } from 'react-router-dom'
+import { Control, LocalForm, Errors } from 'react-redux-form' //Manages state, handleInputChange(), handleBlur() on our behalf
 
 class Contact extends Component {
     constructor(props) {
         super(props);
-        this.state = {
-            firstName: '',
-            lastName: '',
-            telNum: '',
-            email: '',
-            agree: false,
-            contactType: 'Tel.',
-            message: '',
-            touched: {
-                firstName: false,
-                lastName: false,
-                telnum: false,
-                email: false
-            }
-        }
+        // this.state = {
+        //     firstName: '',
+        //     lastName: '',
+        //     telNum: '',
+        //     email: '',
+        //     agree: false,
+        //     contactType: 'Tel.',
+        //     message: '',
+        //     touched: {
+        //         firstName: false,
+        //         lastName: false,
+        //         telnum: false,
+        //         email: false
+        //     }
+        //  }
         this.handleSubmit = this.handleSubmit.bind(this);
-        this.handleInputChange = this.handleInputChange.bind(this);
-        this.handleBlur = this.handleBlur.bind(this);
+        //     this.handleInputChange = this.handleInputChange.bind(this);
+        //     this.handleBlur = this.handleBlur.bind(this);
     }
     /*invoked upon any change to any input value in our form. When it is invoked, we will retrieve the target input from the event that has just been passed in*/
-    handleInputChange(event) {
-        const target = event.target;
-        const value = target.type === 'checkbox' ? target.checked : target.value;
-        const name = target.name;
+    // handleInputChange(event) {
+    //     const target = event.target;
+    //     const value = target.type === 'checkbox' ? target.checked : target.value;
+    //     const name = target.name;
 
-        this.setState({
-            [name]: value
-        });
-    }
+    //     this.setState({
+    //         [name]: value
+    //     });
+    // }
     /*In order to make this handleSubmit information available for use like with the form, we need to bind this in the constructor. */
-    handleSubmit(event) {
-        console.log("Current state is: ", JSON.stringify(this.state));
-        alert("Current state is: " + JSON.stringify(this.state));
-        event.preventDefault(); {/*Prevent default behavior when submitting a form (going to the next page)*/ }
+    handleSubmit(values) { //input parameter values as we no longer have state - have to print out values
+        // console.log("Current state is: ", JSON.stringify(this.state));
+        console.log("Current state is: ", JSON.stringify(values));
+        // alert("Current state is: " + JSON.stringify(this.state));
+        alert("Current state is: " + JSON.stringify(values));
+        // event.preventDefault(); {/*Prevent default behavior when submitting a form (going to the next page)*/ }
     }
 
     // Ensures that for whatever field, the touched value of the field's state will be set to true
-    handleBlur = (field) => (evt) => {
-        this.setState({
-            touched: { ...this.state.touched, [field]: true } 
-        });
-    }
+    // handleBlur = (field) => (evt) => {
+    //     this.setState({
+    //         touched: { ...this.state.touched, [field]: true }
+    //     });
+    // }
 
-    validate(firstName, lastName, telNum, email) {
-        const errors = {
-            firstName: '',
-            lastName: '',
-            telNum: '',
-            email: '',
-        };
+    // validate(firstName, lastName, telNum, email) {
+    //     const errors = {
+    //         firstName: '',
+    //         lastName: '',
+    //         telNum: '',
+    //         email: '',
+    //     };
 
-        if (this.state.touched.firstName && firstName.length < 3) {
-            errors.firstName = 'First name should be >= 3 characters';
-        } else if (this.state.touched.firstName && firstName.length > 10) {
-            errors.firstName = 'First name should be <= 10 characters';
-        }
+    //     if(this.state.touched.firstName && firstName.length < 3) {
+    //     errors.firstName = 'First name should be >= 3 characters';
+    // } else if (this.state.touched.firstName && firstName.length > 10) {
+    //     errors.firstName = 'First name should be <= 10 characters';
+    // }
 
-        if (this.state.touched.lastName && lastName.length < 3) {
-            errors.lastName = 'Last name should be >= 3 characters';
-        } else if (this.state.touched.lastName && lastName.length > 10) {
-            errors.lastName = 'Last name should be <= 10 characters';
-        }
+    // if (this.state.touched.lastName && lastName.length < 3) {
+    //     errors.lastName = 'Last name should be >= 3 characters';
+    // } else if (this.state.touched.lastName && lastName.length > 10) {
+    //     errors.lastName = 'Last name should be <= 10 characters';
+    // }
 
-        const reg = /^\d+$/;
-        if (this.state.touched.telNum && !reg.test(telNum)) {
-            errors.telNum = 'Tel. Number should only contain numbers';
-        }
-        if (this.state.touched.email && email.split('').filter(x => x === '@').length !== 1) {
-            errors.email = 'Email should contain an @';
-        }
+    // const reg = /^\d+$/;
+    // if (this.state.touched.telNum && !reg.test(telNum)) {
+    //     errors.telNum = 'Tel. Number should only contain numbers';
+    // }
+    // if (this.state.touched.email && email.split('').filter(x => x === '@').length !== 1) {
+    //     errors.email = 'Email should contain an @';
+    // }
 
-        return errors;
-    }
+    // return errors;
+    //     }
     render() {
-        const errors = this.validate(this.state.firstName, this.state.lastName, this.state.telNum, this.state.email)
+        // const errors = this.validate(this.state.firstName, this.state.lastName, this.state.telNum, this.state.email)
         return (
             <div className="container">
                 <div className="row">
@@ -123,70 +126,97 @@ class Contact extends Component {
                         <h3>Send us your Feedback</h3>
                     </div>
                     <div className="col-12 col-md-9">
-                        <Form onSubmit={this.handleSubmit}>
-                            <FormGroup row>
+                        {/* <Form onSubmit={this.handleSubmit}> */}
+                        <LocalForm onSubmit={(values) => this.handleSubmit(values)}> {/**Update form to use react-redux-form using LocalForm elements */}
+                            {/* <FormGroup row> */} {/**No longer importing FormGroup from react-strap */}
+                            <Row className="form-group">
                                 <Label htmlFor="firstname" md={2}>First Name</Label>
                                 <Col md={10}>{/*Col in reactstrap is like saying div class name is equal to col-md-10. So that's condensed into this format using the reactstrap col component here*/}
-                                    <Input type="text" id="firstname" name="firstName" placeholder="First Name" value={this.state.firstName} valid={errors.firstName === ''} invalid={errors.firstName !== ''} onBlur={this.handleBlur('firstName')} onChange={this.handleInputChange}></Input>
-                                    <FormFeedback>{errors.firstName}</FormFeedback>
+                                    {/* <Input type="text" id="firstname" name="firstName" placeholder="First Name" value={this.state.firstName} valid={errors.firstName === ''} invalid={errors.firstName !== ''} onBlur={this.handleBlur('firstName')} onChange={this.handleInputChange}></Input> */}
+                                    <Control.text placeholder="First Name" name="firstName" className="form-control" model=".firstName"></Control.text> {/**Specification of the model reflects state information when form is submitted. */}
+                                    {/* <FormFeedback>{errors.firstName}</FormFeedback> */}
                                 </Col>
-                            </FormGroup>
-                            <FormGroup row>
+                            </Row>
+                            {/* </FormGroup> */}
+                            {/* <FormGroup row> */}
+                            <Row className="form-group">
                                 <Label htmlFor="lastname" md={2}>Last Name</Label>
                                 <Col md={10}>{/*Col in reactstrap is like saying div class name is equal to col-md-10. So that's condensed into this format using the reactstrap col component here*/}
-                                    <Input type="text" id="lastname" name="lastName" placeholder="Last Name" value={this.state.lastName} valid={errors.lastName === ''} invalid={errors.lastName !== ''} onBlur={this.handleBlur('lastName')} onChange={this.handleInputChange}></Input>
-                                    <FormFeedback>{errors.lastName}</FormFeedback>
+                                    {/* <Input type="text" id="lastname" name="lastName" placeholder="Last Name" value={this.state.lastName} valid={errors.lastName === ''} invalid={errors.lastName !== ''} onBlur={this.handleBlur('lastName')} onChange={this.handleInputChange}></Input> */}
+                                    <Control.text placeholder="Last Name" name="lastName" className="form-control" model=".lastName"></Control.text>
+                                    {/* <FormFeedback>{errors.lastName}</FormFeedback> */}
                                 </Col>
-                            </FormGroup>
-                            <FormGroup row>
+                                {/* </FormGroup> */}
+                            </Row>
+                            {/* <FormGroup row> */}
+                            <Row className="form-group">
                                 <Label htmlFor="telnum" md={2}>Contact Tel.</Label>
                                 <Col md={10}>{/*Col in reactstrap is like saying div class name is equal to col-md-10. So that's condensed into this format using the reactstrap col component here*/}
-                                    <Input type="tel" id="telnum" name="telNum" placeholder="Tel. Number" value={this.state.telNum} valid={errors.telNum === ''} invalid={errors.telNum !== ''} onBlur={this.handleBlur('telNum')} onChange={this.handleInputChange}></Input>
-                                    <FormFeedback>{errors.telNum}</FormFeedback>
+                                    {/* <Input type="tel" id="telnum" name="telNum" placeholder="Tel. Number" value={this.state.telNum} valid={errors.telNum === ''} invalid={errors.telNum !== ''} onBlur={this.handleBlur('telNum')} onChange={this.handleInputChange}></Input> */}
+                                    <Control.text placeholder="Tel. Number" name="telNum" className="form-control" model=".telNum"></Control.text>
+                                    {/* <FormFeedback>{errors.telNum}</FormFeedback> */}
                                 </Col>
-                            </FormGroup>
-                            <FormGroup row>
+                            </Row>
+                            {/* </FormGroup> */}
+                            {/* <FormGroup row> */}
+                            <Row className="form-group">
                                 <Label htmlFor="email" md={2}>Email</Label>
                                 <Col md={10}>{/*Col in reactstrap is like saying div class name is equal to col-md-10. So that's condensed into this format using the reactstrap col component here*/}
-                                    <Input type="email" id="email" name="email" placeholder="Email" value={this.state.email} valid={errors.email === ''} invalid={errors.email !== ''} onBlur={this.handleBlur('email')} onChange={this.handleInputChange}></Input>
-                                    <FormFeedback>{errors.email}</FormFeedback>
+                                    {/* <Input type="email" id="email" name="email" placeholder="Email" value={this.state.email} valid={errors.email === ''} invalid={errors.email !== ''} onBlur={this.handleBlur('email')} onChange={this.handleInputChange}></Input> */}
+                                    <Control.text placeholder="Email" name="email" className="form-control" model=".email"></Control.text>
+                                    {/* <FormFeedback>{errors.email}</FormFeedback> */}
                                 </Col>
-                            </FormGroup>
-                            <FormGroup row>
+                            </Row>
+                            {/* </FormGroup> */}
+                            {/* <FormGroup row> */}
+                            <Row className="form-group">
                                 <Col md={{ size: 6, offset: 2 }}>{/*Col in reactstrap is like saying div class name is equal to col-md-10. So that's condensed into this format using the reactstrap col component here*/}
-                                    <FormGroup check>
+                                    {/* <FormGroup check> */}
+                                    <div className="form-check">
                                         <Label check>
-                                            <Input type="checkbox" name="agree" checked={this.state.agree} onChange={this.handleInputChange}></Input>{' '}
+                                            {/* <Input type="checkbox" name="agree" checked={this.state.agree} onChange={this.handleInputChange}></Input>{' '} */}
+                                            <Control.checkbox model=".agree" name="agree" className="form-check-input"></Control.checkbox>
                                             <strong>May we contact you?</strong>
                                         </Label>
-                                    </FormGroup>
+                                    </div>
+                                    {/* </FormGroup> */}
                                 </Col>
                                 <Col md={{ size: 3, offset: 1 }}>{/*Col in reactstrap is like saying div class name is equal to col-md-10. So that's condensed into this format using the reactstrap col component here*/}
-                                    <Input type="select" name="contactType" value={this.state.contactType} onChange={this.handleInputChange}>
+                                    {/* <Input type="select" name="contactType" value={this.state.contactType} onChange={this.handleInputChange}> */}
+                                    <Control.select model=".contactType" name="contactType" className="form-control" >
                                         <option>Tel.</option>
                                         <option>Email</option>
-                                    </Input>
+                                    </Control.select>
+                                    {/* </Input> */}
                                 </Col>
-                            </FormGroup>
-                            <FormGroup row>
+                            </Row>
+                            {/* </FormGroup> */}
+                            <Row className="form-group">
+                                {/* <FormGroup row> */}
                                 <Label htmlFor="message" md={2}>Your Feedback</Label>
                                 <Col md={10}>{/*Col in reactstrap is like saying div class name is equal to col-md-10. So that's condensed into this format using the reactstrap col component here*/}
-                                    <Input type="textarea" id="message" name="message" rows="12" value={this.state.message} onChange={this.handleInputChange}></Input>
+                                    {/* <Input type="textarea" id="message" name="message" rows="12" value={this.state.message} onChange={this.handleInputChange}></Input> */}
+                                    <Control.textarea model=".message" name="message" rows="12" className="form-control"></Control.textarea>
                                 </Col>
-                            </FormGroup>
-                            <FormGroup row>
+                                {/* </FormGroup> */}
+                            </Row>
+                            {/* <FormGroup row> */}
+                            <Row className="form-group">
                                 <Col md={{ size: 10, offset: 2 }}>{/*Col in reactstrap is like saying div class name is equal to col-md-10. So that's condensed into this format using the reactstrap col component here*/}
                                     <Button type="submit" color="primary">
                                         Send Feedback
                                     </Button>
                                 </Col>
-                            </FormGroup>
-                        </Form>
+                            </Row>
+                            {/* </FormGroup> */}
+                            {/* </Form> */}
+                        </LocalForm>
                     </div>
-                </div>
-            </div>
+                </div >
+            </div >
         );
     }
 }
+
 
 export default Contact;
