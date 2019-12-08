@@ -3,6 +3,12 @@ import { Breadcrumb, BreadcrumbItem, Button, Form, FormFeedback, FormGroup, Labe
 import { Link } from 'react-router-dom'
 import { Control, LocalForm, Errors } from 'react-redux-form' //Manages state, handleInputChange(), handleBlur() on our behalf
 
+const required = (val) => val && val.length;
+const maxLength = (len) => (val) => !(val) || (val.length <= len);
+const minLength = (len) => (val) => (val) && (val.length >= len);
+const isNumber = (val) => !isNaN(Number(val));
+const validEmail = (val) => /^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,4}$/i.test(val); //check validity of email using regEx.
+
 class Contact extends Component {
     constructor(props) {
         super(props);
@@ -133,8 +139,11 @@ class Contact extends Component {
                                 <Label htmlFor="firstname" md={2}>First Name</Label>
                                 <Col md={10}>{/*Col in reactstrap is like saying div class name is equal to col-md-10. So that's condensed into this format using the reactstrap col component here*/}
                                     {/* <Input type="text" id="firstname" name="firstName" placeholder="First Name" value={this.state.firstName} valid={errors.firstName === ''} invalid={errors.firstName !== ''} onBlur={this.handleBlur('firstName')} onChange={this.handleInputChange}></Input> */}
-                                    <Control.text placeholder="First Name" name="firstName" className="form-control" model=".firstName"></Control.text> {/**Specification of the model reflects state information when form is submitted. */}
+                                    <Control.text placeholder="First Name" name="firstName" className="form-control" model=".firstName" validators={{ required, minLength: minLength(3), maxLength: maxLength(15) }}></Control.text> {/**Specification of the model reflects state information when form is submitted. */}
                                     {/* <FormFeedback>{errors.firstName}</FormFeedback> */}
+                                    <Errors className="text-danger" model=".firstName" show="touched"
+                                        messages={{ required: 'Required', minLength: "Must be greater than 2 characters", maxLength: "Must be 15 characters or less" }}>
+                                    </Errors>
                                 </Col>
                             </Row>
                             {/* </FormGroup> */}
@@ -143,8 +152,11 @@ class Contact extends Component {
                                 <Label htmlFor="lastname" md={2}>Last Name</Label>
                                 <Col md={10}>{/*Col in reactstrap is like saying div class name is equal to col-md-10. So that's condensed into this format using the reactstrap col component here*/}
                                     {/* <Input type="text" id="lastname" name="lastName" placeholder="Last Name" value={this.state.lastName} valid={errors.lastName === ''} invalid={errors.lastName !== ''} onBlur={this.handleBlur('lastName')} onChange={this.handleInputChange}></Input> */}
-                                    <Control.text placeholder="Last Name" name="lastName" className="form-control" model=".lastName"></Control.text>
+                                    <Control.text placeholder="Last Name" name="lastName" className="form-control" model=".lastName" validators={{ required, minLength: minLength(3), maxLength: maxLength(15) }}></Control.text>
                                     {/* <FormFeedback>{errors.lastName}</FormFeedback> */}
+                                    <Errors className="text-danger" model=".lastName" show="touched"
+                                        messages={{ required: 'Required', minLength: "Must be greater than 2 characters", maxLength: "Must be 15 characters or less" }}>
+                                    </Errors>
                                 </Col>
                                 {/* </FormGroup> */}
                             </Row>
@@ -153,7 +165,10 @@ class Contact extends Component {
                                 <Label htmlFor="telnum" md={2}>Contact Tel.</Label>
                                 <Col md={10}>{/*Col in reactstrap is like saying div class name is equal to col-md-10. So that's condensed into this format using the reactstrap col component here*/}
                                     {/* <Input type="tel" id="telnum" name="telNum" placeholder="Tel. Number" value={this.state.telNum} valid={errors.telNum === ''} invalid={errors.telNum !== ''} onBlur={this.handleBlur('telNum')} onChange={this.handleInputChange}></Input> */}
-                                    <Control.text placeholder="Tel. Number" name="telNum" className="form-control" model=".telNum"></Control.text>
+                                    <Control.text placeholder="Tel. Number" name="telNum" className="form-control" model=".telNum" validators={{ required, minLength: minLength(3), maxLength: maxLength(15), isNumber }}></Control.text>
+                                    <Errors className="text-danger" model=".telNum" show="touched"
+                                        messages={{ required: 'Required', minLength: "Must be greater than 2 numbers", maxLength: "Must be 15 numbers or less", isNumber: "Must be a number" }}>
+                                    </Errors>
                                     {/* <FormFeedback>{errors.telNum}</FormFeedback> */}
                                 </Col>
                             </Row>
@@ -163,8 +178,11 @@ class Contact extends Component {
                                 <Label htmlFor="email" md={2}>Email</Label>
                                 <Col md={10}>{/*Col in reactstrap is like saying div class name is equal to col-md-10. So that's condensed into this format using the reactstrap col component here*/}
                                     {/* <Input type="email" id="email" name="email" placeholder="Email" value={this.state.email} valid={errors.email === ''} invalid={errors.email !== ''} onBlur={this.handleBlur('email')} onChange={this.handleInputChange}></Input> */}
-                                    <Control.text placeholder="Email" name="email" className="form-control" model=".email"></Control.text>
+                                    <Control.text placeholder="Email" name="email" className="form-control" model=".email" validators={{ required, validEmail }}></Control.text>
                                     {/* <FormFeedback>{errors.email}</FormFeedback> */}
+                                    <Errors className="text-danger" model=".email" show="touched"
+                                        messages={{ required: 'Required', validEmail: 'Invalid email address' }}>
+                                    </Errors>
                                 </Col>
                             </Row>
                             {/* </FormGroup> */}
