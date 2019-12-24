@@ -4,6 +4,7 @@ import { Card, CardImg, CardImgOverlay, CardText, CardBody, CardTitle, Breadcrum
 import moment from 'moment'
 import { Link } from 'react-router-dom'
 import { Control, LocalForm, Errors } from 'react-redux-form'
+import { Loading } from './LoadingComponent'
 
 const required = (val) => val && val.length;
 const maxLength = (len) => (val) => !(val) || (val.length <= len);
@@ -26,8 +27,13 @@ class CommentForm extends Component {
     }
 
     handleSubmit(values) {
-        console.log('Current state is: ', JSON.stringify(values));
-        alert('Current state is: ' + JSON.stringify(values), this.toggleModal());
+        // console.log('Current state is: ', JSON.stringify(values));
+        // alert('Current state is: ' + JSON.stringify(values), this.toggleModal());
+        console.log(this.props.dishID);
+        console.log(values.rating);
+        console.log(values.author);
+        console.log(values.comment);
+        this.props.addComment(this.props.dishID, values.rating, values.author, values.comment);
     }
 
     render() {
@@ -97,7 +103,7 @@ function RenderDish({ dish }) {
     }
 }
 
-function RenderComments({ comments }) {
+function RenderComments({ comments, addComment, dishID }) {
     if (comments == null) {
         return (
             <div></div>
@@ -121,42 +127,62 @@ function RenderComments({ comments }) {
 
             )
         })
-
+        // TODO: Append new addComment to list here if comment exists. 
         return (
             <div>
                 <h4>Comments</h4>
                 {commentsList}
-                <CommentForm /> 
+                <CommentForm dishID={dishID} addComment={addComment} />
             </div>
         )
     }
 }
 
 const DishDetail = (props) => {
-    return (
-        <div className="container">
-            <div className="row">
-                <Breadcrumb>
-                    <BreadcrumbItem><Link to="/menu">Menu</Link></BreadcrumbItem>
-                    <BreadcrumbItem active>{props.dish.name}</BreadcrumbItem>
-                </Breadcrumb>
-                <div className="col-12">
-                    <h3>{props.dish.name}</h3>
-                    <hr />
+    if (props.isLoading) {
+        {/**Conditional rendering */ }
+        return (
+            <div className="container">
+                <div className="row">
+                    <Loading />
                 </div>
             </div>
-            <div className="row">
-                <div className="col-12 col-md-5 m-1">
-                    <RenderDish dish={props.dish} />
-                    {/* {this.renderDish(selectedDish)} */}
-                </div>
-                <div className="col-12 col-md-5 m-1">
-                    <RenderComments comments={props.comments} />
-                    {/* {this.renderComments(selectedDish)} */}
+        )
+    } else if (props.errMess) {
+        return (
+            <div className="container">
+                <div className="row">
+                    <h4>{props.errMess}</h4>
                 </div>
             </div>
-        </div>
-    )
+        )
+    } else {
+        return (
+            <div className="container">
+                <div className="row">
+                    <Breadcrumb>
+                        <BreadcrumbItem><Link to="/menu">Menu</Link></BreadcrumbItem>
+                        <BreadcrumbItem active>{props.dish.name}</BreadcrumbItem>
+                    </Breadcrumb>
+                    <div className="col-12">
+                        <h3>{props.dish.name}</h3>
+                        <hr />
+                    </div>
+                </div>
+                <div className="row">
+                    <div className="col-12 col-md-5 m-1">
+                        <RenderDish dish={props.dish} />
+                        {/* {this.renderDish(selectedDish)} */}
+                    </div>
+                    <div className="col-12 col-md-5 m-1">
+                        <RenderComments comments={props.comments}  /* {this.renderComments(selectedDish)} */
+                            addComment={props.addComment}
+                            dishID={props.dish.id} />
+                    </div>
+                </div>
+            </div>
+        )
+    }
 }
 
 
