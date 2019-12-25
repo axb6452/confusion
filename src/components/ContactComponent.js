@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
-import { Breadcrumb, BreadcrumbItem, Button, Form, FormFeedback, FormGroup, Label, Input, Row, Col } from 'reactstrap'
+import { Breadcrumb, BreadcrumbItem, Button, FormFeedback, FormGroup, Label, Input, Row, Col } from 'reactstrap'
 import { Link } from 'react-router-dom'
-import { Control, LocalForm, Errors } from 'react-redux-form' //Manages state, handleInputChange(), handleBlur() on our behalf
+import { Control, Form, Errors, actions } from 'react-redux-form' //Manages state, handleInputChange(), handleBlur() on our behalf
 
 const required = (val) => val && val.length;
 const maxLength = (len) => (val) => !(val) || (val.length <= len);
@@ -48,6 +48,7 @@ class Contact extends Component {
         // alert("Current state is: " + JSON.stringify(this.state));
         alert("Current state is: " + JSON.stringify(values));
         // event.preventDefault(); {/*Prevent default behavior when submitting a form (going to the next page)*/ }
+        this.props.resetFeedbackForm();
     }
 
     // Ensures that for whatever field, the touched value of the field's state will be set to true
@@ -133,10 +134,11 @@ class Contact extends Component {
                     </div>
                     <div className="col-12 col-md-9">
                         {/* <Form onSubmit={this.handleSubmit}> */}
-                        <LocalForm onSubmit={(values) => this.handleSubmit(values)}> {/**Update form to use react-redux-form using LocalForm elements */}
-                            {/* <FormGroup row> */} {/**No longer importing FormGroup from react-strap */}
+                        {/* <LocalForm onSubmit={(values) => this.handleSubmit(values)}> *Update form to use react-redux-form using LocalForm elements */}
+                        {/* <FormGroup row> */} {/**No longer importing FormGroup from react-strap */}
+                        <Form model="feedback" onSubmit={(values) => this.handleSubmit(values)}>
                             <Row className="form-group">
-                                <Label htmlFor="firstname" md={2}>First Name</Label>
+                                <Label htmlFor="firstName" md={2}>First Name</Label>
                                 <Col md={10}>{/*Col in reactstrap is like saying div class name is equal to col-md-10. So that's condensed into this format using the reactstrap col component here*/}
                                     {/* <Input type="text" id="firstname" name="firstName" placeholder="First Name" value={this.state.firstName} valid={errors.firstName === ''} invalid={errors.firstName !== ''} onBlur={this.handleBlur('firstName')} onChange={this.handleInputChange}></Input> */}
                                     <Control.text placeholder="First Name" name="firstName" className="form-control" model=".firstName" validators={{ required, minLength: minLength(3), maxLength: maxLength(15) }}></Control.text> {/**Specification of the model reflects state information when form is submitted. */}
@@ -149,7 +151,7 @@ class Contact extends Component {
                             {/* </FormGroup> */}
                             {/* <FormGroup row> */}
                             <Row className="form-group">
-                                <Label htmlFor="lastname" md={2}>Last Name</Label>
+                                <Label htmlFor="lastName" md={2}>Last Name</Label>
                                 <Col md={10}>{/*Col in reactstrap is like saying div class name is equal to col-md-10. So that's condensed into this format using the reactstrap col component here*/}
                                     {/* <Input type="text" id="lastname" name="lastName" placeholder="Last Name" value={this.state.lastName} valid={errors.lastName === ''} invalid={errors.lastName !== ''} onBlur={this.handleBlur('lastName')} onChange={this.handleInputChange}></Input> */}
                                     <Control.text placeholder="Last Name" name="lastName" className="form-control" model=".lastName" validators={{ required, minLength: minLength(3), maxLength: maxLength(15) }}></Control.text>
@@ -162,7 +164,7 @@ class Contact extends Component {
                             </Row>
                             {/* <FormGroup row> */}
                             <Row className="form-group">
-                                <Label htmlFor="telnum" md={2}>Contact Tel.</Label>
+                                <Label htmlFor="telNum" md={2}>Contact Tel.</Label>
                                 <Col md={10}>{/*Col in reactstrap is like saying div class name is equal to col-md-10. So that's condensed into this format using the reactstrap col component here*/}
                                     {/* <Input type="tel" id="telnum" name="telNum" placeholder="Tel. Number" value={this.state.telNum} valid={errors.telNum === ''} invalid={errors.telNum !== ''} onBlur={this.handleBlur('telNum')} onChange={this.handleInputChange}></Input> */}
                                     <Control.text placeholder="Tel. Number" name="telNum" className="form-control" model=".telNum" validators={{ required, minLength: minLength(3), maxLength: maxLength(15), isNumber }}></Control.text>
@@ -228,7 +230,8 @@ class Contact extends Component {
                             </Row>
                             {/* </FormGroup> */}
                             {/* </Form> */}
-                        </LocalForm>
+                            {/* </LocalForm> */}
+                        </Form>
                     </div>
                 </div >
             </div >

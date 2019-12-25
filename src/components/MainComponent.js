@@ -10,9 +10,11 @@ import { Switch, Route, Redirect, withRouter } from 'react-router-dom';
 import { parse } from 'path';
 import { connect } from 'react-redux';
 import { addComment, fetchDishes, dishesLoading } from '../redux/ActionCreators';
+import { actions } from 'react-redux-form';
 
 // Need to define mapStateToProps() function, which obtains state as a parameter.
 // Have to connect this component to redux store in order to receive state. 
+// Console output window enables you to keep tract of form state in redux store. 
 
 const mapStateToProps = state => { //This will map the redux store state into props that will become available to the component. Enables redux state to be available as props inside main component. 
     return {
@@ -25,7 +27,8 @@ const mapStateToProps = state => { //This will map the redux store state into pr
 
 const mapDispatchToProps = (dispatch) => ({
     addComment: (dishID, rating, author, comment) => dispatch(addComment(dishID, rating, author, comment)), // addComment action creator passed 4 parameter values. This will then return the action object for adding a comment. Action object is then passed as parameter to dispatch function, which is then used within the component in connect().  
-    fetchDishes: () => { dispatch(fetchDishes()) } //Can dispatch fetchDishes() thunk so that it is loaded in redux store and is available for the MainComponent to make use of .  
+    fetchDishes: () => { dispatch(fetchDishes()) }, //Can dispatch fetchDishes() thunk so that it is loaded in redux store and is available for the MainComponent to make use of .  
+    resetFeedbackForm: () => {dispatch(actions.reset('feedback'))}
 });
 
 
@@ -72,7 +75,7 @@ class Main extends Component {
                         <Route path="/home" component={HomePage} />
                         <Route exact path="/menu" component={() => <Menu dishes={this.props.dishes} />} /> {/* Inline function component declaration in order to pass props to menu component.*/}
                         <Route path="/menu/:dishId" component={DishWithId}></Route>
-                        <Route exact path="/contactus" component={Contact}></Route> {/* when not passng any props to component, can just reference component as such using {}*/}
+                        <Route exact path="/contactus" component={() => <Contact resetFeedbackForm={this.props.resetFeedbackForm} ></Contact>}></Route> {/* when not passng any props to component, can just reference component as such using {}*/}
                         <Route exact path="/aboutus" component={() => <About leaders={this.props.leaders} />} />  {/*Assignment 2: Task 1*/}
                         <Redirect to="/home"></Redirect>
                     </Switch>
