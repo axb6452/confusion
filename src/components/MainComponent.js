@@ -9,7 +9,7 @@ import About from './AboutComponent';
 import { Switch, Route, Redirect, withRouter } from 'react-router-dom';
 import { parse } from 'path';
 import { connect } from 'react-redux';
-import { addComment, fetchDishes, dishesLoading } from '../redux/ActionCreators';
+import { addComment, fetchDishes, fetchComments, fetchPromos} from '../redux/ActionCreators';
 import { actions } from 'react-redux-form';
 
 // Need to define mapStateToProps() function, which obtains state as a parameter.
@@ -28,7 +28,9 @@ const mapStateToProps = state => { //This will map the redux store state into pr
 const mapDispatchToProps = (dispatch) => ({
     addComment: (dishID, rating, author, comment) => dispatch(addComment(dishID, rating, author, comment)), // addComment action creator passed 4 parameter values. This will then return the action object for adding a comment. Action object is then passed as parameter to dispatch function, which is then used within the component in connect().  
     fetchDishes: () => { dispatch(fetchDishes()) }, //Can dispatch fetchDishes() thunk so that it is loaded in redux store and is available for the MainComponent to make use of .  
-    resetFeedbackForm: () => {dispatch(actions.reset('feedback'))}
+    resetFeedbackForm: () => {dispatch(actions.reset('feedback'))},
+    fetchComments: () => {dispatch(fetchComments())},
+    fetchPromos: () => {dispatch(fetchPromos())}
 });
 
 
@@ -40,6 +42,8 @@ class Main extends Component {
 
     componentDidMount() {
         this.props.fetchDishes(); // When main component is getting mounted in the view, after it is mounted, fetchDishes() is called resulting in a call to fetch the dishes and load it into redux store making it available to the application. 
+        this.props.fetchComments();
+        this.props.fetchPromos();
     }
 
     render() {
@@ -49,7 +53,9 @@ class Main extends Component {
                 <Home dish={this.props.dishes.dishes.filter((dish) => dish.featured)[0]}
                     dishesLoading={this.props.dishes.isLoading}
                     dishesErrMess={this.props.dishes.errMess}
-                    promotion={this.props.promotions.filter((promotion) => promotion.featured)[0]}
+                    promotion={this.props.promotions.promotions.filter((promotion) => promotion.featured)[0]}
+                    promosLoading={this.props.promotions.isLoading}
+                    promosErrMess={this.props.promotions.errMess}
                     leader={this.props.leaders.filter((leader) => leader.featured)[0]}>
                 </Home>
             )
@@ -60,7 +66,8 @@ class Main extends Component {
                 <DishDetail dish={this.props.dishes.dishes.filter((dish) => dish.id === parseInt(match.params.dishId, 10))[0]}
                     isLoading={this.props.dishes.isLoading}
                     errMess={this.props.dishes.errMess}
-                    comments={this.props.comments.filter((comment) => comment.dishId == parseInt(match.params.dishId, 10))}
+                    comments={this.props.comments.comments.filter((comment) => comment.dishId == parseInt(match.params.dishId, 10))}
+                    commentsErrMess = {this.props.comments.errMess}
                     addComment={this.props.addComment}>
                 </DishDetail>
             )

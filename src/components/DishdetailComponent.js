@@ -5,6 +5,7 @@ import moment from 'moment'
 import { Link } from 'react-router-dom'
 import { Control, LocalForm, Errors } from 'react-redux-form'
 import { Loading } from './LoadingComponent'
+import { baseUrl } from '../shared/baseUrl'
 
 const required = (val) => val && val.length;
 const maxLength = (len) => (val) => !(val) || (val.length <= len);
@@ -90,9 +91,18 @@ function RenderDish({ dish }) {
         )
     } else {
         return (
+            // <Card>
+            //     <Media left middle>
+            //         <CardImg top src={dish.image}></CardImg>
+            //     </Media>
+            //     <CardBody>
+            //         <CardTitle heading>{dish.name}</CardTitle>
+            //         <CardText>{dish.description}</CardText>
+            //     </CardBody>
+            // </Card>
             <Card>
                 <Media left middle>
-                    <CardImg top src={dish.image}></CardImg>
+                    <CardImg top src={baseUrl + dish.image}></CardImg>
                 </Media>
                 <CardBody>
                     <CardTitle heading>{dish.name}</CardTitle>

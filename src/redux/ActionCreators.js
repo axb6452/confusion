@@ -1,5 +1,7 @@
 import * as ActionTypes from './ActionTypes';
 import { DISHES } from '../shared/dishes';
+import { baseUrl } from '../shared/baseUrl';
+// import { addComments } from '@babel/types';
 
 // Action object created  and returned by arrow function with 4 parameters.
 export const addComment = (dishID, rating, author, comment) => ({
@@ -13,11 +15,16 @@ export const addComment = (dishID, rating, author, comment) => ({
 });
 
 export const fetchDishes = () => (dispatch) => { // This thunk returns an inner function that calls/dispatches several actions. 
-    dispatch(dishesLoading(true));
+    dispatch(dishesLoading());
 
-    setTimeout(() => {
-        dispatch(addDishes(DISHES));
-    }, 2000);
+    // setTimeout(() => {
+    //     dispatch(addDishes(DISHES));
+    // }, 2000); //originall put in place to simulate communication with the server. 
+
+    return fetch(baseUrl + 'dishes')
+        .then(response => response.json())
+        .then(dishes => dispatch(addDishes(dishes)));
+
 }
 
 export const dishesLoading = () => ({
@@ -32,4 +39,44 @@ export const dishesFailed = (errmess) => ({
 export const addDishes = (dishes) => ({
     type: ActionTypes.ADD_DISHES,
     payload: dishes
+});
+
+export const addComments = (comments) => ({
+    type: ActionTypes.ADD_COMMENTS,
+    payload: comments
+});
+
+export const fetchComments = () => (dispatch) => {
+    return fetch(baseUrl + 'comments')
+        .then(response => response.json())
+        .then(comments => dispatch(addComments(comments)));
+}
+
+export const commentsFailed = (comments) => ({
+    type: ActionTypes.ADD_COMMENTS,
+    payload: comments
+});
+
+export const fetchPromos = () => (dispatch) => {
+    
+    dispatch(promosLoading());
+
+    return fetch(baseUrl + 'promotions')
+    .then(response => response.json())
+    .then(promos => dispatch(addPromos(promos)));
+}
+
+
+export const promosLoading = () => ({
+    type: ActionTypes.PROMOS_LOADING
+});
+
+export const promosFailed = (errmess) => ({
+    type: ActionTypes.PROMOS_FAILED,
+    payload: errmess
+});
+
+export const addPromos = (promos) => ({
+    type: ActionTypes.ADD_PROMOS,
+    payload: promos
 });

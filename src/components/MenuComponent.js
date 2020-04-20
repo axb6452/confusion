@@ -2,12 +2,22 @@ import React from 'react'
 import { Card, CardImg, CardImgOverlay, CardText, CardBody, CardTitle, Breadcrumb, BreadcrumbItem } from 'reactstrap'
 import { Link } from 'react-router-dom'
 import { Loading } from './LoadingComponent'
+import { baseUrl } from '../shared/baseUrl'
 
 function RenderMenuItem({ dish, onClick }) {
     return (
+        // <Card>
+        //     <Link to={`/menu/${dish.id}`}> {/*use of back quotes ensures that the value is evaluated and interpolated into the link path*/}
+        //         <CardImg width="100%" src={dish.image} alt={dish.name} />
+        //         <CardImgOverlay>
+        //             <CardTitle heading>{dish.name}</CardTitle>
+        //             <p>{dish.description}</p>
+        //         </CardImgOverlay>
+        //     </Link>
+        // </Card>
         <Card>
             <Link to={`/menu/${dish.id}`}> {/*use of back quotes ensures that the value is evaluated and interpolated into the link path*/}
-                <CardImg width="100%" src={dish.image} alt={dish.name} />
+                <CardImg width="100%" src={baseUrl + dish.image} alt={dish.name} />
                 <CardImgOverlay>
                     <CardTitle heading>{dish.name}</CardTitle>
                     <p>{dish.description}</p>
