@@ -30,11 +30,13 @@ class CommentForm extends Component {
     handleSubmit(values) {
         // console.log('Current state is: ', JSON.stringify(values));
         // alert('Current state is: ' + JSON.stringify(values), this.toggleModal());
-        console.log(this.props.dishID);
+        console.log(this.props.dishId);
         console.log(values.rating);
         console.log(values.author);
         console.log(values.comment);
-        this.props.addComment(this.props.dishID, values.rating, values.author, values.comment);
+        // this.props.addComment(this.props.dishId, values.rating, values.author, values.comment);
+        this.props.postComment(this.props.dishId, values.rating, values.author, values.comment);
+
     }
 
     render() {
@@ -113,7 +115,7 @@ function RenderDish({ dish }) {
     }
 }
 
-function RenderComments({ comments, addComment, dishID }) {
+function RenderComments({ comments, postComment, dishId }) {
     if (comments == null) {
         return (
             <div></div>
@@ -127,7 +129,7 @@ function RenderComments({ comments, addComment, dishID }) {
                             <li>
                                 {comment.comment}
                             </li>
-                            <li>
+                            <li >
                                 {"-- " + comment.author + " , "}
                                 {moment(comment.date).format('MMM, DD YYYY')}
                             </li>
@@ -142,7 +144,8 @@ function RenderComments({ comments, addComment, dishID }) {
             <div>
                 <h4>Comments</h4>
                 {commentsList}
-                <CommentForm dishID={dishID} addComment={addComment} />
+                {/* <CommentForm dishId={dishId} addComment={addComment} /> */}
+                <CommentForm dishId={dishId} postComment={postComment} />
             </div>
         )
     }
@@ -186,8 +189,9 @@ const DishDetail = (props) => {
                     </div>
                     <div className="col-12 col-md-5 m-1">
                         <RenderComments comments={props.comments}  /* {this.renderComments(selectedDish)} */
-                            addComment={props.addComment}
-                            dishID={props.dish.id} />
+                            // addComment={props.addComment}
+                            postComment={props.postComment}
+                            dishId={props.dish.id} />
                     </div>
                 </div>
             </div>

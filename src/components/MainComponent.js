@@ -9,7 +9,8 @@ import About from './AboutComponent';
 import { Switch, Route, Redirect, withRouter } from 'react-router-dom';
 import { parse } from 'path';
 import { connect } from 'react-redux';
-import { addComment, fetchDishes, fetchComments, fetchPromos} from '../redux/ActionCreators';
+// import { addComment, fetchDishes, fetchComments, fetchPromos} from '../redux/ActionCreators';
+import { postComment, fetchDishes, fetchComments, fetchPromos} from '../redux/ActionCreators';
 import { actions } from 'react-redux-form';
 
 // Need to define mapStateToProps() function, which obtains state as a parameter.
@@ -26,7 +27,8 @@ const mapStateToProps = state => { //This will map the redux store state into pr
 }
 
 const mapDispatchToProps = (dispatch) => ({
-    addComment: (dishID, rating, author, comment) => dispatch(addComment(dishID, rating, author, comment)), // addComment action creator passed 4 parameter values. This will then return the action object for adding a comment. Action object is then passed as parameter to dispatch function, which is then used within the component in connect().  
+    // addComment: (dishId, rating, author, comment) => dispatch(addComment(dishId, rating, author, comment)), // addComment action creator passed 4 parameter values. This will then return the action object for adding a comment. Action object is then passed as parameter to dispatch function, which is then used within the component in connect(). 
+    postComment: (dishId, rating, author, comment) => dispatch(postComment(dishId, rating, author, comment)), // postComment action creator passed 4 parameter values. This will then return the action object for adding a comment. Action object is then passed as parameter to dispatch function, which is then used within the component in connect().   
     fetchDishes: () => { dispatch(fetchDishes()) }, //Can dispatch fetchDishes() thunk so that it is loaded in redux store and is available for the MainComponent to make use of .  
     resetFeedbackForm: () => {dispatch(actions.reset('feedback'))},
     fetchComments: () => {dispatch(fetchComments())},
@@ -68,7 +70,8 @@ class Main extends Component {
                     errMess={this.props.dishes.errMess}
                     comments={this.props.comments.comments.filter((comment) => comment.dishId == parseInt(match.params.dishId, 10))}
                     commentsErrMess = {this.props.comments.errMess}
-                    addComment={this.props.addComment}>
+                    // addComment={this.props.addComment}>
+                    postComment={this.props.postComment}>
                 </DishDetail>
             )
         }

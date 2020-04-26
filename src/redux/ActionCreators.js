@@ -4,15 +4,52 @@ import { baseUrl } from '../shared/baseUrl';
 // import { addComments } from '@babel/types';
 
 // Action object created  and returned by arrow function with 4 parameters.
-export const addComment = (dishID, rating, author, comment) => ({
+export const addComment = (comment) => ({
     type: ActionTypes.ADD_COMMENT,
-    payload: {
-        dishID: dishID,
+    // payload: {
+    //     dishId: dishId,
+    //     rating: rating,
+    //     author: author,
+    //     comment: comment
+    // }
+    payload: comment
+});
+
+export const postComment = (dishId, rating, author, comment) => (dispatch) => {//will push the comment into the redux store
+    const newComment = {
+        dishId: dishId,
         rating: rating,
         author: author,
         comment: comment
-    }
-});
+    }; 
+    newComment.date = new Date().toISOString();
+
+    return fetch(baseUrl + 'comments', {
+        method: 'POST',
+        body: JSON.stringify(newComment),
+        headers: {
+            'Content-Type': 'application/json'
+        },
+        credentials: 'same-origin'
+    })
+    .then(response => {
+        if (response.ok) {
+            return response;
+        } else {
+            var error = new Error('Error ' + response.status + ': ' + response.statusText) // status will contain status code, statusText will contain the error messae. 
+            error.response = response;
+            throw error;
+        }
+    },
+    error => {
+        var errmess = new Error(error.message);
+        throw errmess;
+    })
+    .then(response => response.json())
+    .then(response => dispatch(addComment(response)))
+    .catch(error => { console.log('Post Comments', error.message);
+    alert('Your comment could not be posted\nError: ' + error.message); });
+}
 
 export const fetchDishes = () => (dispatch) => { // This thunk returns an inner function that calls/dispatches several actions. 
     dispatch(dishesLoading());
