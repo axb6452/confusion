@@ -6,6 +6,7 @@ import { Link } from 'react-router-dom'
 import { Control, LocalForm, Errors } from 'react-redux-form'
 import { Loading } from './LoadingComponent'
 import { baseUrl } from '../shared/baseUrl'
+import { FadeTransform, Fade, Stagger } from 'react-animation-components'
 
 const required = (val) => val && val.length;
 const maxLength = (len) => (val) => !(val) || (val.length <= len);
@@ -102,15 +103,19 @@ function RenderDish({ dish }) {
             //         <CardText>{dish.description}</CardText>
             //     </CardBody>
             // </Card>
-            <Card>
-                <Media left middle>
-                    <CardImg top src={baseUrl + dish.image}></CardImg>
-                </Media>
-                <CardBody>
-                    <CardTitle heading>{dish.name}</CardTitle>
-                    <CardText>{dish.description}</CardText>
-                </CardBody>
-            </Card>
+            <FadeTransform in transformProps={{
+                exitTransform: 'scale(0.5) translateY(-50%)'
+            }}>
+                <Card>
+                    <Media left middle>
+                        <CardImg top src={baseUrl + dish.image}></CardImg>
+                    </Media>
+                    <CardBody>
+                        <CardTitle heading>{dish.name}</CardTitle>
+                        <CardText>{dish.description}</CardText>
+                    </CardBody>
+                </Card>
+            </FadeTransform>
         )
     }
 }
@@ -125,26 +130,31 @@ function RenderComments({ comments, postComment, dishId }) {
             return (
                 <div className="container">
                     <div key={comment.id}>
-                        <ul className="list-unstyled">
-                            <li>
-                                {comment.comment}
-                            </li>
-                            <li >
-                                {"-- " + comment.author + " , "}
-                                {moment(comment.date).format('MMM, DD YYYY')}
-                            </li>
-                        </ul>
+                        <Stagger in>
+                            <ul className="list-unstyled">
+                                <Fade in>
+                                    <li>
+                                        {comment.comment}
+                                    </li>
+                                    <li >
+                                        {"-- " + comment.author + " , "}
+                                        {moment(comment.date).format('MMM, DD YYYY')}
+                                    </li>
+                                </Fade>
+                            </ul>
+                        </Stagger>
                     </div>
                 </div>
-
             )
         })
-        // TODO: Append new addComment to list here if comment exists. 
+
+        // TODO: Append new addComment to list here if comment exists.
         return (
             <div>
                 <h4>Comments</h4>
                 {commentsList}
                 {/* <CommentForm dishId={dishId} addComment={addComment} /> */}
+
                 <CommentForm dishId={dishId} postComment={postComment} />
             </div>
         )
