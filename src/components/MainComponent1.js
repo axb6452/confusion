@@ -54,6 +54,7 @@ class Main extends Component {
 
     render() {
         const HomePage = () => {
+            {/* A second way to define function components - explicit declaration of function component*/ }
             return (
                 <Home dish={this.props.dishes.dishes.filter((dish) => dish.featured)[0]}
                     dishesLoading={this.props.dishes.isLoading}

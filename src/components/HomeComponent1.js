@@ -17,6 +17,16 @@ function RenderCard({ item, isLoading, errMess }) {
 
     } else {
         return (
+            // <Card>
+            //     <CardImg src={item.image} alt={item.name}></CardImg>
+            //     <CardBody>
+            //         <CardTitle>
+            //             {item.name}
+            //         </CardTitle>
+            //         {item.designation ? <CardSubtitle>{item.designation}</CardSubtitle> : null} {/* able to Use JavaScript ternary within JSX*/}
+            //         <CardText>{item.description}</CardText>
+            //     </CardBody>
+            // </Card>
             <FadeTransform in transformProps={{
                 exitTransform: 'scale(0.5) translateY(-50%)'
             }}>

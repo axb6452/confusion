@@ -1,9 +1,17 @@
 import * as ActionTypes from './ActionTypes';
+import { DISHES } from '../shared/dishes';
 import { baseUrl } from '../shared/baseUrl';
+// import { addComments } from '@babel/types';
 
 // Action object created  and returned by arrow function with 4 parameters.
 export const addComment = (comment) => ({
     type: ActionTypes.ADD_COMMENT,
+    // payload: {
+    //     dishId: dishId,
+    //     rating: rating,
+    //     author: author,
+    //     comment: comment
+    // }
     payload: comment
 });
 
@@ -89,6 +97,11 @@ export const postFeedback = (firstname, lastname, telnum, email, agree, contactT
 
 export const fetchDishes = () => (dispatch) => { // This thunk returns an inner function that calls/dispatches several actions. 
     dispatch(dishesLoading());
+
+    // setTimeout(() => {
+    //     dispatch(addDishes(DISHES));
+    // }, 2000); //originall put in place to simulate communication with the server. 
+
     return fetch(baseUrl + 'dishes')
         .then(response => {
             if (response.ok) {

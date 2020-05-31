@@ -7,14 +7,14 @@ import { NavLink } from 'react-router-dom'
 
 class Header extends Component {
     constructor(props) {
-        {/* constructor used to store state information*/ }
+        /* constructor used to store state information*/ 
         super(props);
         this.state = {
             isNavOpen: false,
             isModalOpen: false
         };
-        this.toggleNav = this.toggleNav.bind(this); {/* Creates a bound function that has the same body as the original function. Used as an alternative to  */ }
-        {/* an inline function during OnClick event in NavbarToggler  */ }
+        this.toggleNav = this.toggleNav.bind(this); /* Creates a bound function that has the same body as the original function. Used as an alternative to  */ 
+        /* an inline function during OnClick event in NavbarToggler  */ 
         this.toggleModal = this.toggleModal.bind(this);
         this.handleLogin = this.handleLogin.bind(this);
     }

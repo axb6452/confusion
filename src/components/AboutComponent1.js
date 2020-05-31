@@ -34,6 +34,26 @@ function RenderLeader({ leader }) {
     }
 }
 
+// function RenderLeader({ leader }) {
+//     return (
+//         <Media as='li'>
+//             <img
+//                 width={64}
+//                 height={64}
+//                 className='mr-3'
+//                 src={leader.image}
+//                 alt={leader.name}
+//             />
+//             <Media body>
+//                 <h5>{leader.name}</h5>
+//                 <p>{leader.designation}</p>
+//                 <p>{leader.description} </p>
+//             </Media>
+//         </Media>
+//     );
+// }
+
+
 function About(props) {
     console.log('About props', props);
     const leaders = props.leaders.leaders.map((leader) => {
@@ -119,6 +139,7 @@ function About(props) {
                             {leaders}
                         </Media>
                     </div>
+                    {/* <div className='col-12'>{leaders}</div> */}
                 </div>
             </div>
         );

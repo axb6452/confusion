@@ -1,6 +1,6 @@
 import React, { Component } from 'react'
 import { Media } from 'reactstrap'
-import { Card, CardImg, CardImgOverlay, CardText, CardBody, CardTitle, Breadcrumb, BreadcrumbItem, Button, Modal, ModalHeader, ModalBody, ModalFooter, Row, Col, Label } from 'reactstrap'
+import { Card, CardImg, CardText, CardBody, CardTitle, Breadcrumb, BreadcrumbItem, Button, Modal, ModalHeader, ModalBody, Row, Col, Label } from 'reactstrap'
 import moment from 'moment'
 import { Link } from 'react-router-dom'
 import { Control, LocalForm, Errors } from 'react-redux-form'
@@ -163,7 +163,7 @@ function RenderComments({ comments, postComment, dishId }) {
 
 const DishDetail = (props) => {
     if (props.isLoading) {
-        {/**Conditional rendering */ }
+        /**Conditional rendering */ 
         return (
             <div className="container">
                 <div className="row">
